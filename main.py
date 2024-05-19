@@ -133,6 +133,7 @@ while opcion != 5:
                     if clase.id == idClase:
                         clase.mostrarEstudiantesConNotas()
                         break
+
             elif opcionReporte == 3:
                 idAlumno = int(input("Carnet del alumno: "))
                 for clase in listaDeClases:
@@ -141,21 +142,25 @@ while opcion != 5:
                             print(f"Nombre: {alumno.nombre}, Curso: {clase.nombre}, Nota: {alumno.nota}")
                             continue
                 break
+
             elif opcionReporte == 4:
                 for clase in listaDeClases:
                     print(f"Curso: {clase.nombre}, Nota media: {str(clase.notaMedia())}")
                 break
 
+
             elif opcionReporte == 5:
+
                 # Coleccionar todas las notas de los estudiantes en todos los cursos
+
                 notas_estudiantes = {}
+
                 for clase in listaDeClases:
                     for alumno in clase.alumnos:
                         if alumno.id not in notas_estudiantes:
-                            notas_estudiantes[alumno.id] = {'nombre': alumno.nombre, 'notas': []}
+                            notas_estudiantes[alumno.id] = {'nombre': alumno.nombre, 'notas': [alumno.nota]}
                         else:
                             notas_estudiantes[alumno.id]['notas'].append(alumno.nota)
-
                 # Calcular el promedio general de notas
                 mejor_estudiante = None
                 mejor_promedio = 0
@@ -164,12 +169,12 @@ while opcion != 5:
                     if promedio > mejor_promedio:
                         mejor_promedio = promedio
                         mejor_estudiante = data['nombre']
-
                 if mejor_estudiante:
                     print(f"Nombre: {mejor_estudiante}, Promedio: {mejor_promedio}")
                 else:
                     print("No hay estudiantes registrados.")
                 break
+
 
             elif opcionReporte == 6:
                 break
