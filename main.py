@@ -39,6 +39,7 @@ class Clase:
     def notaMedia(self):
         return sum([alumno.nota for alumno in self.alumnos]) / len(self.alumnos)
 
+
 class Alumno:
     def __init__(self, id, nombre, fecha_nacimiento, nota=0):
         self.id = id
@@ -47,9 +48,18 @@ class Alumno:
         self.nota = nota
 
 
+def buscarAlumnoPorID(id, clases):
+    for clase in clases:
+        for alumno in clase.alumnos:
+            if alumno.id == id:
+                return alumno
+    return None
+
+
 def mostrarClases(listaDeClases):
     for clase in listaDeClases:
         print(f"ID: {clase.id}, Nombre: {clase.nombre}, Horario: {clase.horario}, Salon: {clase.salon}, Profesor: {clase.profesor}")
+
 
 # INICIO DEL PROGRAMA
 listaDeClases = []
@@ -80,8 +90,16 @@ while opcion != 5:
     elif opcion == 2:
         try:
             id = int(input("Carnet: "))
-            nombre = input("Nombre: ")
-            nacimiento = input("Fecha de nacimiento (YYYY-MM-DD): ")
+            alumno_existente = buscarAlumnoPorID(id, listaDeClases)
+
+            if alumno_existente:
+                nombre = alumno_existente.nombre
+                nacimiento = alumno_existente.nacimiento
+                print(f"El alumno ya existe: Nombre: {nombre}, Fecha de nacimiento: {nacimiento}")
+            else:
+                nombre = input("Nombre: ")
+                nacimiento = input("Fecha de nacimiento (YYYY-MM-DD): ")
+
             nuevoAlumno = Alumno(id, nombre, nacimiento)
             mostrarClases(listaDeClases)
             idClase = int(input("ID de la clase a asignar: "))
@@ -112,10 +130,8 @@ while opcion != 5:
             print("Error al asignar nota, alguno de los parametros no es valido.")
 
     elif opcion == 4:
-
-
         opcionReporte = 0
-        while(opcionReporte != 6):
+        while opcionReporte != 6:
             print("\n1. Listado de cursos con cantidad de estudiantes de mayor a menor")
             print("2. Listar estudiantes de un curso seleccionado junto con las notas de ese curso")
             print("3. Listar para un estudiante seleccionado sus nota")
@@ -127,34 +143,28 @@ while opcion != 5:
             if opcionReporte == 1:
                 clase.mostrarCursosConCantidadEstudiantes()
                 break
+
             elif opcionReporte == 2:
                 idClase = int(input("ID de la clase: "))
                 for clase in listaDeClases:
                     if clase.id == idClase:
                         clase.mostrarEstudiantesConNotas()
                         break
-
+                break
             elif opcionReporte == 3:
                 idAlumno = int(input("Carnet del alumno: "))
                 for clase in listaDeClases:
                     for alumno in clase.alumnos:
                         if alumno.id == idAlumno:
                             print(f"Nombre: {alumno.nombre}, Curso: {clase.nombre}, Nota: {alumno.nota}")
-                            continue
-                break
-
+                            break
             elif opcionReporte == 4:
                 for clase in listaDeClases:
                     print(f"Curso: {clase.nombre}, Nota media: {str(clase.notaMedia())}")
                 break
-
-
             elif opcionReporte == 5:
-
                 # Coleccionar todas las notas de los estudiantes en todos los cursos
-
                 notas_estudiantes = {}
-
                 for clase in listaDeClases:
                     for alumno in clase.alumnos:
                         if alumno.id not in notas_estudiantes:
@@ -174,13 +184,10 @@ while opcion != 5:
                 else:
                     print("No hay estudiantes registrados.")
                 break
-
-
             elif opcionReporte == 6:
                 break
             else:
                 print("Opción no válida.")
-
     elif opcion == 5:
         print("Saliendo del programa...")
         break
