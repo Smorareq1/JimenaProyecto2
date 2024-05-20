@@ -77,6 +77,10 @@ while opcion != 5:
     if opcion == 1:
         try:
             id = int(input("ID: "))
+            # Verificar si el ID ya existe
+            if any(clase.id == id for clase in listaDeClases):
+                print("Error: Ya existe una clase con ese ID.")
+                continue
             nombre = input("Nombre: ")
             horario = input("Horario: ")
             salon = input("Salon: ")
@@ -84,8 +88,8 @@ while opcion != 5:
             nuevaClase = Clase(id, nombre, horario, salon, profesor)
             listaDeClases.append(nuevaClase)
             print("Clase agregada exitosamente.")
-        except:
-            print("Error al agregar clase, alguno de los parametros no es valido.")
+        except Exception as e:
+            print(f"Error al agregar clase: {e}")
 
     elif opcion == 2:
         try:
